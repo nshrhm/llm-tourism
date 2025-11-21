@@ -1,0 +1,8 @@
+﻿session_id,experiment_id,timestamp,model,model_display_name,persona_id,persona_name,travel_type_id,travel_type_name,prompt,response,tokens_used,latency_ms,response_char_count,response_word_count,response_line_count,prompt_char_count
+session_20251121_150652,exp_024,2025-11-21T15:12:01.648954+09:00,anthropic/claude-sonnet-4.5,Anthropic Claude Sonnet 4.5,government_official,地方自治体の地域振興担当者,family,家族旅行,"あなたは地方自治体の地域振興担当者です。以下の指示に従って、必ず日本語で回答してください。
+
+下関の観光名所を紹介してください。紹介相手は、家族旅行を計画しています。
+session_20251121_150652,exp_032,2025-11-21T15:14:58.257352+09:00,google/gemini-2.5-flash,Google Gemini 2.5 Flash,travel_agent,旅行代理店スタッフ,family,家族旅行,"あなたは旅行代理店スタッフです。以下の指示に従って、必ず日本語で回答してください。
+session_20251121_150652,exp_000,2025-11-21T15:06:52.217781+09:00,openai/gpt-5.1-chat,OpenAI GPT-5.1,travel_agent,旅行代理店スタッフ,family,家族旅行,"あなたは旅行代理店スタッフです。以下の指示に従って、必ず日本語で回答してください。
+session_20251121_150652,exp_016,2025-11-21T15:09:06.250906+09:00,anthropic/claude-sonnet-4.5,Anthropic Claude Sonnet 4.5,travel_agent,旅行代理店スタッフ,family,家族旅行,"あなたは旅行代理店スタッフです。以下の指示に従って、必ず日本語で回答してください。
+session_20251121_150652,exp_048,2025-11-21T15:17:38.356426+09:00,x-ai/grok-4-fast,xAI Grok-4 Fast,travel_agent,旅行代理店スタッフ,family,家族旅行,"あなたは旅行代理店スタッフです。以下の指示に従って、必ず日本語で回答してください。

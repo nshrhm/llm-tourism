@@ -5,7 +5,7 @@
 [![OpenRouter](https://img.shields.io/badge/API-OpenRouter-green.svg)](https://openrouter.ai/)
 [![Tests](https://img.shields.io/badge/tests-passing-brightgreen.svg)]()
 
-> **開かれた学術研究**: 本プロジェクトは、LLMの観光情報生成能力を体系的に評価する、再現可能な実験システムです。すべてのコード、データ、ドキュメントをCC BY 4.0ライセンスで公開しています。
+> **開かれた学術研究**: 本プロジェクトは、LLMの観光情報生成能力を体系的に評価する、再現可能な実験システムです。すべてのコード、実験手順、ドキュメント、サンプルデータをCC BY 4.0ライセンスで公開しています。実験データは再現スクリプトにより生成可能です。
 
 ## 📋 目次
 
@@ -66,7 +66,7 @@ bash scripts/run_experiment.sh
 
 ## ✅ 検証済み動作環境
 
-本システムは以下の環境で動作確認済みです：
+本システムは以下の環境で動作確認済みです。
 
 ### システム環境
 - **OS**: Linux (WSL2), macOS, Windows
@@ -201,7 +201,7 @@ OPENROUTER_API_KEY=sk-or-v1-xxxxxxxxxxxxxxxxxx
 bash scripts/run_experiment.sh
 ```
 
-このスクリプトは以下を自動実行します：
+このスクリプトは以下を自動実行します。
 1. 環境チェック
 2. 実験実行（64パターン）
 3. データ変換（JSON→CSV）
@@ -247,9 +247,16 @@ print(response['response'])
 
 ## データ構造
 
+### サンプルデータの確認
+
+実験を実行する前に、サンプルデータで構造を確認できます。
+- 📁 [`data/examples/`](data/examples/) - 4モデルのサンプル（JSON形式）
+- 📄 [`data/examples/sample_results.csv`](data/examples/sample_results.csv) - サンプルデータ（CSV形式）
+- 📖 [`data/examples/README.md`](data/examples/README.md) - サンプルデータの詳細説明
+
 ### 生データ（JSON形式）
 
-保存先: [`data/raw/`](data/raw/)
+保存先: [`data/raw/`](data/raw/)（実験実行後に生成）
 
 ```json
 {
@@ -306,6 +313,27 @@ print(response['response'])
 | `prompt_char_count` | integer | プロンプト文字数 |
 
 ## 📊 サンプル出力
+
+### サンプルデータ
+
+実験を実行せずにデータ構造や分析例を確認できるサンプルデータを提供しています。
+
+```python
+import json
+import pandas as pd
+
+# JSONサンプル（4モデルから1つずつ）
+with open('data/examples/exp_000_gpt5_sample.json', 'r', encoding='utf-8') as f:
+    sample = json.load(f)
+    print(f"モデル: {sample['model']['display_name']}")
+    print(f"文字数: {len(sample['response'])}")
+
+# CSVサンプル
+df = pd.read_csv('data/examples/sample_results.csv')
+print(df[['model_display_name', 'response_char_count', 'tokens_used']])
+```
+
+詳細は [`data/examples/README.md`](data/examples/README.md) をご覧ください。
 
 ### 検証テストの実行例
 
@@ -374,8 +402,9 @@ llm-tourism/
 │   ├── experiment_runner.py     # 実験実行エンジン
 │   └── data_converter.py        # データ変換ツール
 ├── data/
-│   ├── raw/                     # JSON生データ
-│   ├── processed/               # CSV処理済みデータ
+│   ├── examples/                # サンプルデータ（4モデル）
+│   ├── raw/                     # JSON生データ（実験実行後に生成）
+│   ├── processed/               # CSV処理済みデータ（実験実行後に生成）
 │   └── archive/                 # アーカイブデータ
 ├── docs/
 │   ├── methodology.md           # 実験方法論（学術論文スタイル）
@@ -454,7 +483,7 @@ model = AutoModelForSequenceClassification.from_pretrained(model_name)
 
 ## 再現性の確保
 
-本研究では以下の情報を記録し、完全な再現性を確保しています：
+本研究では以下の情報を記録し、完全な再現性を確保しています。
 
 1. **実験パラメータ**: YAML設定ファイルで明示的に管理
 2. **実行日時**: ISO 8601形式、タイムゾーン付き
@@ -489,7 +518,7 @@ Error: 401 Client Error: Unauthorized
 ### レート制限エラー（429 Too Many Requests）
 
 **解決方法**:
-`config/experiment_config.yaml`で`request_delay`を増やしてください：
+`config/experiment_config.yaml`で`request_delay`を増やしてください。
 
 ```yaml
 api:
@@ -540,7 +569,7 @@ pytest tests/ -v
 
 ## 引用方法
 
-本研究を引用する場合は、以下の形式を推奨します：
+本研究を引用する場合は、以下の形式を推奨します。
 
 ```bibtex
 @software{llm_tourism_2025,
