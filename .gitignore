@@ -65,3 +65,6 @@ logs/
 # その他
 *.bak
 *.tmp
+
+# セットアップスクリプト（機密情報含む）
+github_setup.sh
