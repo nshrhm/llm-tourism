@@ -5,7 +5,7 @@
 [![OpenRouter](https://img.shields.io/badge/API-OpenRouter-green.svg)](https://openrouter.ai/)
 [![Tests](https://img.shields.io/badge/tests-passing-brightgreen.svg)]()
 
-> **開かれた学術研究**: 本プロジェクトは、LLMの観光情報生成能力を体系的に評価する、完全に再現可能な実験システムです。すべてのコード、データ、ドキュメントをCC BY 4.0ライセンスで公開しています。
+> **開かれた学術研究**: 本プロジェクトは、LLMの観光情報生成能力を体系的に評価する、再現可能な実験システムです。すべてのコード、データ、ドキュメントをCC BY 4.0ライセンスで公開しています。
 
 ## 📋 目次
 
@@ -31,7 +31,7 @@
 1. **性能比較**: 異なるLLMの観光情報生成能力の定量的評価
 2. **ペルソナ影響**: ペルソナ設定が出力内容に与える影響の分析
 3. **ターゲット適応**: ターゲット層（旅行タイプ）による応答特性の評価
-4. **再現性**: 完全に再現可能な実験環境の構築と共有
+4. **再現性**: 再現可能な実験環境の構築と共有
 
 ### 主な特徴
 
@@ -74,7 +74,7 @@ bash scripts/run_experiment.sh
 - **メモリ**: 4GB以上推奨
 - **ストレージ**: 500MB以上
 
-### 検証結果（2025-01-21実施）
+### 検証結果（2025-11-21実施）
 
 | 項目 | 結果 | 詳細 |
 |------|------|------|
@@ -255,7 +255,7 @@ print(response['response'])
 {
   "session_id": "session_20250121_143022",
   "experiment_id": "exp_000",
-  "timestamp": "2025-01-21T14:30:22.123456+09:00",
+  "timestamp": "2025-11-21T14:30:22.123456+09:00",
   "model": {
     "name": "openai/gpt-5.1-chat",
     "display_name": "OpenAI GPT-5.1"
@@ -544,7 +544,7 @@ pytest tests/ -v
 
 ```bibtex
 @software{llm_tourism_2025,
-  author = {[著者名]},
+  author = {白濵 成希},
   title = {LLM地域観光紹介性能比較実験システム},
   year = {2025},
   url = {https://github.com/nshrhm/llm-tourism},
@@ -568,7 +568,7 @@ pytest tests/ -v
 
 研究に関する問い合わせ：
 - **GitHub Issues**: [リポジトリのIssues](https://github.com/nshrhm/llm-tourism/issues)
-- **Email**: [研究者メールアドレス]
+- **Email**: [nshirahama＠ieee.org]
 
 ## 参考文献
 
@@ -586,7 +586,5 @@ pytest tests/ -v
   - 単体テスト11件合格
 
 ---
-
-**研究倫理**: 本研究は学術目的で実施され、データサイエンス学部の研究倫理規定に準拠しています。
 
 **オープンサイエンス**: すべてのコード、データ、ドキュメントをCC BY 4.0ライセンスで公開し、学術コミュニティへの貢献を目指しています。

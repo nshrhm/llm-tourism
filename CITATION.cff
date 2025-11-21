@@ -7,11 +7,10 @@ title: "LLM地域観光紹介性能比較実験システム"
 abstract: "大規模言語モデル（LLM）の地域観光紹介における性能を体系的に比較評価するための実験システム。異なるLLM、ペルソナ、旅行タイプの組み合わせによる64パターンの実験を通じて、各モデルの特性を定量的・定性的に分析します。"
 type: software
 authors:
-  - family-names: "[著者姓]"
-    given-names: "[著者名]"
-    email: "[メールアドレス]"
+  - family-names: "白濵"
+    given-names: "成希"
+    email: "nshirahama@ieee.org"
     affiliation: "データサイエンス学部"
-    orcid: "https://orcid.org/0000-0000-0000-0000"  # 該当する場合
 repository-code: "https://github.com/nshrhm/llm-tourism"
 url: "https://github.com/nshrhm/llm-tourism"
 keywords:
