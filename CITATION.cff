@@ -1,0 +1,32 @@
+# Citation File Format (CFF) for LLM Tourism Research
+# https://citation-file-format.github.io/
+
+cff-version: 1.2.0
+message: "このソフトウェアを引用する場合は、以下の形式を使用してください。"
+title: "LLM地域観光紹介性能比較実験システム"
+abstract: "大規模言語モデル（LLM）の地域観光紹介における性能を体系的に比較評価するための実験システム。異なるLLM、ペルソナ、旅行タイプの組み合わせによる64パターンの実験を通じて、各モデルの特性を定量的・定性的に分析します。"
+type: software
+authors:
+  - family-names: "[著者姓]"
+    given-names: "[著者名]"
+    email: "[メールアドレス]"
+    affiliation: "データサイエンス学部"
+    orcid: "https://orcid.org/0000-0000-0000-0000"  # 該当する場合
+repository-code: "https://github.com/nshrhm/llm-tourism"
+url: "https://github.com/nshrhm/llm-tourism"
+keywords:
+  - "large language model"
+  - "LLM"
+  - "tourism"
+  - "performance evaluation"
+  - "text generation"
+  - "computational linguistics"
+  - "natural language processing"
+  - "下関"
+  - "観光情報"
+  - "テキストマイニング"
+  - "感情分析"
+  - "類似度分析"
+license: CC-BY-4.0
+version: "1.0.0"
+date-released: "2025-01-21"

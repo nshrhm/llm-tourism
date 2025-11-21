@@ -1,0 +1,62 @@
+Creative Commons Attribution 4.0 International License
+
+Copyright (c) 2025 LLM Tourism Research Project
+
+This work is licensed under a Creative Commons Attribution 4.0 International License.
+
+You are free to:
+  - Share: copy and redistribute the material in any medium or format
+  - Adapt: remix, transform, and build upon the material for any purpose, even commercially
+
+Under the following terms:
+  - Attribution: You must give appropriate credit, provide a link to the license,
+    and indicate if changes were made. You may do so in any reasonable manner,
+    but not in any way that suggests the licensor endorses you or your use.
+  - No additional restrictions: You may not apply legal terms or technological
+    measures that legally restrict others from doing anything the license permits.
+
+Notices:
+  - You do not have to comply with the license for elements of the material
+    in the public domain or where your use is permitted by an applicable
+    exception or limitation.
+  - No warranties are given. The license may not give you all of the permissions
+    necessary for your intended use. For example, other rights such as publicity,
+    privacy, or moral rights may limit how you use the material.
+
+================================================================================
+
+CREATIVE COMMONS CORPORATION IS NOT A LAW FIRM AND DOES NOT PROVIDE LEGAL
+SERVICES. DISTRIBUTION OF THIS DOCUMENT DOES NOT CREATE AN ATTORNEY-CLIENT
+RELATIONSHIP. CREATIVE COMMONS PROVIDES THIS INFORMATION ON AN "AS-IS" BASIS.
+CREATIVE COMMONS MAKES NO WARRANTIES REGARDING THE USE OF THIS DOCUMENT OR THE
+INFORMATION OR WORKS PROVIDED HEREUNDER, AND DISCLAIMS LIABILITY FOR DAMAGES
+RESULTING FROM THE USE OF THIS DOCUMENT OR THE INFORMATION OR WORKS PROVIDED
+HEREUNDER.
+
+Full legal code: https://creativecommons.org/licenses/by/4.0/legalcode
+
+================================================================================
+
+本研究プロジェクトについて
+
+本プロジェクトは、学術研究目的で開発されたLLM性能比較実験システムです。
+以下のコンポーネントは、すべてCC BY 4.0ライセンスの下で公開されています：
+
+1. ソースコード（src/, scripts/, tests/）
+2. 設定ファイル（config/）
+3. ドキュメント（README.md, docs/）
+4. 実験データ（data/）※実験実行後に生成
+
+引用方法：
+本研究を引用する場合は、以下の形式を推奨します：
+
+  [研究者名]. (2025). LLM地域観光紹介性能比較実験.
+  GitHub. https://github.com/nshrhm/llm-tourism
+  Licensed under CC BY 4.0.
+
+学術的整合性の保証：
+本プロジェクトは、データサイエンス学部の研究倫理規定に準拠し、
+再現可能な研究を促進するために公開されています。
+
+連絡先：
+プロジェクトに関する問い合わせは、GitHubのIssuesまでお願いします。
