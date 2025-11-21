@@ -680,6 +680,80 @@ plt.rcParams['font.family'] = ['DejaVu Sans', 'sans-serif']
 # Windows: すでにインストール済み
 ```
 
+#### エラー4: 英語出力が発生する（2025-11-21に修正済み）
+
+**問題**: 特定の条件で日本語ではなく英語でレスポンスが生成される
+
+**発生条件**:
+- **モデル**: Google Gemini 2.5 Flash
+- **旅行タイプ**: 外国人観光客（日本初訪問）
+- **影響範囲**: 2/64パターン（3.1%）で英語出力（98.6-98.7%英語）
+
+**原因分析**:
+LLMが「外国人観光客」というキーワードから、外国人向けには英語で応答すべきと推論したため。
+プロンプトに明示的な言語指定がなかったため、モデルの推論が優先された。
+
+**解決方法**:
+プロンプトテンプレートに明示的な日本語指定を**冒頭と末尾の両方**に追加：
+
+```yaml
+# 修正前（不十分）
+prompt_template: |
+  あなたは{persona}です。下関の観光名所を紹介してください。
+  紹介相手は、{travel_type}を計画しています。1000文字程度で要約してください。
+
+# 修正後（推奨）
+prompt_template: |
+  あなたは{persona}です。以下の指示に従って、必ず日本語で回答してください。
+
+  下関の観光名所を紹介してください。紹介相手は、{travel_type}を計画しています。
+  1000文字程度で日本語で要約してください。
+```
+
+**検証方法**:
+英語出力を検出するスクリプトを使用：
+
+```python
+# scripts/detect_english_output.py
+import pandas as pd
+import re
+
+def detect_english_ratio(text: str) -> float:
+    """テキスト中の英語の割合を推定"""
+    if not text or not isinstance(text, str):
+        return 0.0
+
+    ascii_chars = len(re.findall(r'[a-zA-Z]', text))
+    japanese_chars = len(re.findall(r'[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF]', text))
+    total_chars = ascii_chars + japanese_chars
+
+    if total_chars == 0:
+        return 0.0
+
+    return ascii_chars / total_chars
+
+# CSVデータを読み込み
+df = pd.read_csv('data/processed/experiment_results.csv')
+
+# 英語割合を計算
+df['english_ratio'] = df['response'].apply(detect_english_ratio)
+
+# 英語が30%以上含まれるものを検出
+threshold = 0.3
+english_outputs = df[df['english_ratio'] >= threshold]
+
+print(f"英語出力パターン数: {len(english_outputs)}/{len(df)}")
+```
+
+**修正結果**:
+- **修正前**: 2/64パターン（3.1%）で英語出力
+- **修正後**: 0/64パターン（0%）で英語出力
+
+**重要な知見**:
+1. **両方向の指定が重要**: プロンプトの冒頭（「必ず日本語で回答してください」）と末尾（「日本語で要約してください」）の両方に言語指定を含める
+2. **モデルの推論を上書き**: 明示的な指示があれば、モデルの文脈推論よりも優先される
+3. **予防的対策**: 多言語モデルを使う場合は、必ず出力言語を明示的に指定する
+
 ### 8.2 パフォーマンス最適化
 
 ```python
