@@ -1,0 +1,179 @@
+# LLM地域観光紹介性能比較実験 - 設定ファイル
+# バージョン: 1.0.0
+# 更新日: 2025-01-21
+
+# 実験メタデータ
+experiment:
+  name: "LLM地域観光紹介性能比較実験"
+  version: "1.0.0"
+  location: "下関市（山口県）"
+  description: "4種類のLLMによる地域観光紹介性能の体系的比較評価"
+
+# 使用するLLMモデル（4種類）
+models:
+  - name: "openai/gpt-5.1-chat"
+    display_name: "OpenAI GPT-5.1"
+    description: "OpenAI社の最新モデル"
+
+  - name: "anthropic/claude-sonnet-4.5"
+    display_name: "Anthropic Claude Sonnet 4.5"
+    description: "Anthropic社のバランス型モデル"
+
+  - name: "google/gemini-2.5-flash"
+    display_name: "Google Gemini 2.5 Flash"
+    description: "Google社の高速応答モデル"
+
+  - name: "x-ai/grok-4-fast"
+    display_name: "xAI Grok-4 Fast"
+    description: "xAI社の高速モデル"
+
+# ペルソナ設定（4種類）
+personas:
+  - id: "travel_agent"
+    name: "旅行代理店スタッフ"
+    description: "プロフェッショナルな旅行提案を行う"
+    characteristics:
+      - "正確な情報提供"
+      - "予算や時間を考慮した提案"
+      - "顧客ニーズの理解"
+
+  - id: "youtuber"
+    name: "旅行系YouTuber"
+    description: "エンターテイメント性の高い紹介"
+    characteristics:
+      - "視聴者を引き込む表現"
+      - "SNS映えする情報"
+      - "親しみやすい語り口"
+
+  - id: "government_official"
+    name: "地方自治体の地域振興担当者"
+    description: "地域活性化の視点での紹介"
+    characteristics:
+      - "歴史・文化の深い理解"
+      - "地域経済への貢献意識"
+      - "公式で正確な情報"
+
+  - id: "influencer"
+    name: "SNSインフルエンサー"
+    description: "トレンドを意識した紹介"
+    characteristics:
+      - "流行に敏感"
+      - "写真映えするスポット重視"
+      - "共感を呼ぶ表現"
+
+# 旅行タイプ（4種類）
+travel_types:
+  - id: "family"
+    name: "家族旅行"
+    description: "子供連れの家族向け"
+    target_audience:
+      - "小学生の子供を持つ親"
+      - "3世代旅行"
+      - "安全性重視"
+
+  - id: "couple"
+    name: "カップル旅行"
+    description: "カップル・夫婦向け"
+    target_audience:
+      - "ロマンチックな雰囲気"
+      - "2人の時間を楽しむ"
+      - "記念日や特別な日"
+
+  - id: "foreign_tourist"
+    name: "外国人観光客（日本初訪問）"
+    description: "訪日外国人向け"
+    target_audience:
+      - "日本文化への興味"
+      - "英語対応の有無"
+      - "異文化体験重視"
+
+  - id: "senior"
+    name: "シニア世代旅行"
+    description: "60歳以上のシニア層向け"
+    target_audience:
+      - "ゆったりとしたペース"
+      - "バリアフリー対応"
+      - "健康・安全面の配慮"
+
+# プロンプトテンプレート
+prompt_template: |
+  あなたは{persona}です。下関の観光名所を紹介してください。
+  紹介相手は、{travel_type}を計画しています。1000文字程度で要約してください。
+
+# APIパラメータ
+api:
+  # OpenRouter設定
+  base_url: "https://openrouter.ai/api/v1/chat/completions"
+  timeout: 60  # 秒
+
+  # リトライ設定
+  max_retries: 3
+  retry_delay: 5  # 秒（初期値、指数バックオフで増加）
+  backoff_factor: 2.0
+
+  # レート制限
+  request_delay: 2  # リクエスト間の待機時間（秒）
+
+  # モデルパラメータ
+  parameters:
+    temperature: 0.7  # 創造性のバランス（0.0-1.0）
+    max_tokens: 2000  # 最大トークン数
+    top_p: 0.9        # 核サンプリング
+    frequency_penalty: 0.0
+    presence_penalty: 0.0
+
+# データ保存設定
+data:
+  # 生データ（JSON）
+  raw_data_dir: "data/raw"
+  raw_file_prefix: "experiment"
+  raw_file_suffix: ".json"
+
+  # 処理済みデータ（CSV）
+  processed_data_dir: "data/processed"
+  processed_file_name: "experiment_results.csv"
+  csv_encoding: "utf-8-sig"  # Excel対応（BOM付き）
+
+  # タイムスタンプ形式（ISO 8601）
+  timestamp_format: "%Y-%m-%dT%H:%M:%S.%f%z"
+  filename_timestamp_format: "%Y%m%d_%H%M%S"
+
+# ログ設定
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/experiment.log"
+  console_output: true
+
+# 実験実行設定
+execution:
+  # 中断・再開機能
+  enable_resume: true
+  checkpoint_file: "data/.checkpoint.json"
+
+  # プログレス表示
+  show_progress: true
+
+  # 実験ID生成
+  experiment_id_prefix: "exp"
+
+# データ分析設定
+analysis:
+  # テキスト類似度分析
+  similarity:
+    enabled: true
+    model: "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
+    metric: "cosine"  # cosine, euclidean, manhattan
+
+  # 感情分析
+  sentiment:
+    enabled: true
+    model: "cl-tohoku/bert-base-japanese-whole-word-masking"
+    # または oseti（日本語感情極性辞書）
+
+  # テキスト統計
+  text_stats:
+    - "character_count"
+    - "word_count"
+    - "sentence_count"
+    - "average_sentence_length"

@@ -1,0 +1,132 @@
+%% LLM地域観光紹介性能比較実験 - システムフロー図
+%% Version: 1.0.0
+%% License: CC BY 4.0
+
+graph TB
+    %% スタイル定義
+    classDef configClass fill:#e1f5ff,stroke:#01579b,stroke-width:2px
+    classDef processClass fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef dataClass fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef outputClass fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
+
+    %% ========== 初期化フェーズ ==========
+    Start([実験開始]) --> LoadConfig[設定ファイル読み込み<br/>experiment_config.yaml]
+    LoadConfig --> LoadEnv[環境変数読み込み<br/>.env]
+    LoadEnv --> InitAPI[APIクライアント初期化<br/>OpenRouterClient]
+
+    %% ========== プロンプト生成フェーズ ==========
+    InitAPI --> GeneratePrompts[プロンプト生成<br/>PromptGenerator]
+    GeneratePrompts --> CalcPatterns[パターン計算<br/>4×4×4=64]
+
+    CalcPatterns --> CheckResume{チェックポイント<br/>存在する?}
+    CheckResume -->|Yes| LoadCheckpoint[チェックポイント読み込み<br/>completed_experiments]
+    CheckResume -->|No| NewSession[新規セッション開始]
+    LoadCheckpoint --> FilterPending[未完了実験抽出]
+    NewSession --> FilterPending
+
+    %% ========== 実験実行ループ ==========
+    FilterPending --> ExperimentLoop{実験ループ<br/>全64パターン}
+
+    ExperimentLoop -->|次の実験| PrepareRequest[APIリクエスト準備<br/>model + prompt + params]
+    PrepareRequest --> SendAPI[OpenRouter API呼び出し]
+
+    SendAPI --> APIResponse{API応答}
+
+    %% API成功パス
+    APIResponse -->|成功 200| ParseResponse[レスポンス解析<br/>response, tokens, latency]
+    ParseResponse --> SaveJSON[JSON保存<br/>data/raw/]
+    SaveJSON --> UpdateCheckpoint[チェックポイント更新]
+    UpdateCheckpoint --> WaitDelay[待機<br/>2秒]
+
+    %% APIエラーパス
+    APIResponse -->|エラー 4xx/5xx| CheckRetry{リトライ<br/>可能?}
+    CheckRetry -->|Yes| WaitBackoff[指数バックオフ待機]
+    WaitBackoff --> SendAPI
+    CheckRetry -->|No| LogError[エラーログ記録]
+    LogError --> WaitDelay
+
+    %% ループ継続判定
+    WaitDelay --> CheckComplete{全実験<br/>完了?}
+    CheckComplete -->|No| ExperimentLoop
+    CheckComplete -->|Yes| CleanupCheckpoint[チェックポイント削除]
+
+    %% ========== データ変換フェーズ ==========
+    CleanupCheckpoint --> DataConversion[データ変換開始<br/>DataConverter]
+    DataConversion --> LoadJSONs[全JSONファイル読み込み<br/>data/raw/*.json]
+    LoadJSONs --> ConvertDF[DataFrameに変換]
+    ConvertDF --> AddStats[テキスト統計追加<br/>文字数、行数など]
+    AddStats --> SaveCSV[CSV保存<br/>data/processed/experiment_results.csv]
+
+    %% ========== 統計サマリー生成 ==========
+    SaveCSV --> GenerateStats[統計サマリー生成]
+    GenerateStats --> CalcModelStats[モデル別統計]
+    GenerateStats --> CalcPersonaStats[ペルソナ別統計]
+    GenerateStats --> CalcTravelStats[旅行タイプ別統計]
+
+    CalcModelStats --> SaveSummary[サマリー保存<br/>statistics_summary.txt]
+    CalcPersonaStats --> SaveSummary
+    CalcTravelStats --> SaveSummary
+
+    %% ========== 完了 ==========
+    SaveSummary --> End([実験完了])
+
+    %% ========== サブプロセス: 分析フェーズ（オプション） ==========
+    SaveCSV -.-> Analysis[データ分析<br/>オプション]
+    Analysis -.-> SimilarityAnalysis[類似度分析<br/>Sentence Transformers]
+    Analysis -.-> SentimentAnalysis[感情分析<br/>Japanese BERT]
+    Analysis -.-> Visualization[可視化<br/>matplotlib/seaborn]
+
+    SimilarityAnalysis -.-> FinalReport[最終レポート生成]
+    SentimentAnalysis -.-> FinalReport
+    Visualization -.-> FinalReport
+
+    %% ========== スタイル適用 ==========
+    class LoadConfig,LoadEnv,CalcPatterns configClass
+    class GeneratePrompts,PrepareRequest,SendAPI,ParseResponse,DataConversion,ConvertDF,AddStats processClass
+    class SaveJSON,LoadJSONs,LoadCheckpoint,UpdateCheckpoint dataClass
+    class SaveCSV,SaveSummary,FinalReport outputClass
+
+    %% ========== サブグラフ（フェーズ区分） ==========
+    subgraph Phase1[" Phase 1: 初期化 "]
+        LoadConfig
+        LoadEnv
+        InitAPI
+    end
+
+    subgraph Phase2[" Phase 2: プロンプト生成 "]
+        GeneratePrompts
+        CalcPatterns
+    end
+
+    subgraph Phase3[" Phase 3: 実験実行 "]
+        ExperimentLoop
+        PrepareRequest
+        SendAPI
+        APIResponse
+        ParseResponse
+        SaveJSON
+    end
+
+    subgraph Phase4[" Phase 4: データ変換 "]
+        DataConversion
+        LoadJSONs
+        ConvertDF
+        AddStats
+        SaveCSV
+    end
+
+    subgraph Phase5[" Phase 5: 統計サマリー "]
+        GenerateStats
+        CalcModelStats
+        CalcPersonaStats
+        CalcTravelStats
+        SaveSummary
+    end
+
+    subgraph PhaseOptional[" オプション: 詳細分析 "]
+        Analysis
+        SimilarityAnalysis
+        SentimentAnalysis
+        Visualization
+        FinalReport
+    end
